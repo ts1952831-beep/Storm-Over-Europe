@@ -3,261 +3,62 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Storm Over Europe — Web Prototype</title>
+<meta name="theme-color" content="#080d14">
+<title>Storm Over Europe — Urban 3D Demo</title>
 <style>
-:root{color-scheme:dark;--cyan:#78d8ff;--panel:rgba(8,14,22,.78)}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08101a;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#eef5ff;touch-action:none}
-canvas{display:block;width:100%;height:100%;touch-action:none}
-#hud{position:fixed;inset:0;pointer-events:none;padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom)}
-.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding-top:10px}
-.brand{font-size:clamp(13px,3.6vw,20px);font-weight:900;letter-spacing:.08em;text-shadow:0 2px 12px #000}
-.stats{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
-.pill{background:var(--panel);border:1px solid #7dbfe544;border-radius:10px;padding:7px 10px;font-size:12px;backdrop-filter:blur(8px)}
-#hint{position:absolute;top:68px;left:50%;transform:translateX(-50%);background:var(--panel);border:1px solid #ffffff22;border-radius:12px;padding:8px 12px;font-size:12px;text-align:center;max-width:90%;white-space:nowrap}
-#controls{position:absolute;inset:0;pointer-events:none}
-#stick{pointer-events:auto;position:absolute;left:22px;bottom:calc(22px + env(safe-area-inset-bottom));width:138px;height:138px;border-radius:50%;background:#a8dfff20;border:1px solid #a8dfff55;box-shadow:inset 0 0 0 12px #a8dfff0b;touch-action:none}
-#knob{position:absolute;width:56px;height:56px;left:40px;top:40px;border-radius:50%;background:#c5eaff80;border:1px solid #e4f6ff99;box-shadow:0 4px 20px #0007}
-#actions{position:absolute;right:18px;bottom:calc(28px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px;pointer-events:auto}
-.action{width:94px;height:68px;border-radius:18px;border:1px solid #ffffff55;background:#0b1729c9;color:#f2f8ff;font-weight:900;font-size:12px;box-shadow:0 5px 18px #0007;touch-action:manipulation}
-.action:active{transform:scale(.96);background:#174364}
-#message{position:absolute;left:50%;bottom:calc(174px + env(safe-area-inset-bottom));transform:translateX(-50%);font-size:12px;color:#d4e7f8;background:#07101ac9;border:1px solid #ffffff1b;border-radius:10px;padding:8px 12px;max-width:92%;text-align:center;white-space:nowrap}
-#overlay{position:fixed;inset:0;background:linear-gradient(#08101ad9,#08101a88);display:flex;align-items:center;justify-content:center;padding:24px;z-index:5}
-.card{max-width:420px;width:100%;background:#0c1725f2;border:1px solid #8ecfff44;border-radius:22px;padding:24px;box-shadow:0 20px 80px #000a}
-.card h1{font-size:27px;line-height:1.05;margin:0 0 10px;letter-spacing:.03em}
-.card p{color:#c0cede;line-height:1.5;font-size:14px}
-.card button{width:100%;border:0;border-radius:13px;padding:14px;background:linear-gradient(120deg,#1689b9,#4255b7);color:white;font-weight:900;font-size:15px}
-.small{font-size:11px!important;color:#8ea3b9!important}
-@media (min-width:800px){#stick{width:150px;height:150px}#knob{left:46px;top:46px}#actions{flex-direction:row}.action{width:110px}}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080d14;color:#eef4fb;font-family:system-ui,-apple-system,Segoe UI,sans-serif;touch-action:none}canvas{display:block;width:100%;height:100%;touch-action:none}
+#hud{position:fixed;inset:0;pointer-events:none;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom)}.top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;padding-top:9px}.brand{font-size:clamp(13px,3.5vw,20px);font-weight:950;letter-spacing:.09em;text-shadow:0 2px 12px #000}.stats{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:65%}.pill{background:#08111cce;border:1px solid #a9c7d72e;border-radius:9px;padding:7px 9px;font-size:11px;backdrop-filter:blur(8px)}
+#hint{position:absolute;top:70px;left:50%;transform:translateX(-50%);background:#07101bd9;border:1px solid #ffffff20;border-radius:12px;padding:8px 12px;font-size:12px;text-align:center;max-width:94%;white-space:nowrap}
+#stick{pointer-events:auto;position:absolute;left:20px;bottom:calc(23px + env(safe-area-inset-bottom));width:132px;height:132px;border-radius:50%;background:#9ac6dc20;border:1px solid #b6d9e55c;box-shadow:inset 0 0 0 12px #a8dfff09;touch-action:none}#knob{position:absolute;width:54px;height:54px;left:38px;top:38px;border-radius:50%;background:#d3e9f28a;border:1px solid #effaffaa;box-shadow:0 4px 20px #0009}
+#actions{position:absolute;right:14px;bottom:calc(25px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:9px;pointer-events:auto}.action{width:94px;height:64px;border-radius:17px;border:1px solid #ffffff55;background:#07111edb;color:#f2f8ff;font-weight:900;font-size:12px;box-shadow:0 5px 18px #0007;touch-action:manipulation}.action:active{transform:scale(.96);background:#254357}
+#message{position:absolute;left:50%;bottom:calc(168px + env(safe-area-inset-bottom));transform:translateX(-50%);font-size:12px;color:#d4e7f8;background:#07101bd9;border:1px solid #ffffff1b;border-radius:10px;padding:8px 12px;max-width:94%;text-align:center;white-space:nowrap}
+#overlay{position:fixed;inset:0;background:linear-gradient(180deg,#070c13dc,#080e18a8);display:flex;align-items:center;justify-content:center;padding:22px;z-index:5}.card{max-width:420px;width:100%;background:linear-gradient(145deg,#111d29f7,#080e17f5);border:1px solid #a6c9df48;border-radius:22px;padding:24px;box-shadow:0 22px 90px #000c}.eyebrow{font-size:10px;letter-spacing:.22em;color:#d4a878;font-weight:900}.card h1{font-size:30px;line-height:1.02;margin:10px 0;letter-spacing:.02em}.card p{color:#c0cede;line-height:1.5;font-size:14px}.card button{width:100%;border:0;border-radius:13px;padding:15px;background:linear-gradient(120deg,#a35e36,#d0a16c);color:#10131a;font-weight:950;font-size:15px}.small{font-size:11px!important;color:#8ea3b9!important}
+@media(min-width:800px){#stick{width:150px;height:150px}#knob{left:46px;top:46px}#actions{flex-direction:row}.action{width:110px}}
 </style>
 </head>
 <body>
 <canvas id="game"></canvas>
-<div id="hud">
- <div class="top">
-  <div class="brand">STORM <span style="color:#78d8ff">/</span> EUROPE</div>
-  <div class="stats"><div class="pill" id="energy">ENERGIA 100</div><div class="pill" id="rep">REPUTAÇÃO 0</div><div class="pill" id="rivals">RIVAIS 3</div></div>
- </div>
- <div id="hint">Move-te pela arena e afasta os rivais de treino.</div>
- <div id="controls">
-  <div id="stick"><div id="knob"></div></div>
-  <div id="actions"><button class="action" id="push">EMPURRAR</button><button class="action" id="reset">REINICIAR</button></div>
-  <div id="message">Arrasta o joystick • Toca em EMPURRAR perto de um rival</div>
- </div>
-</div>
-<div id="overlay">
- <div class="card">
-  <h1>STORM OVER<br><span style="color:#78d8ff">EUROPE</span></h1>
-  <p>Protótipo web 3D experimental. Explora a rua, evita os rivais e usa o empurrão de treino para os afastar.</p>
-  <p><b>Controlos:</b> joystick à esquerda; botão EMPURRAR à direita. Também podes usar WASD/setas e Espaço no computador.</p>
-  <button id="start">COMEÇAR A JOGAR</button>
-  <p class="small">Versão de demonstração com gráficos 3D simples. Requer ligação à internet para carregar o motor 3D.</p>
- </div>
-</div>
+<div id="hud"><div class="top"><div class="brand">STORM <span style="color:#d7a56e">/</span><br>EUROPE</div><div class="stats"><div class="pill" id="energy">ENERGIA 100</div><div class="pill" id="rep">REPUTAÇÃO 0</div><div class="pill" id="rivals">RIVAIS 3</div></div></div>
+<div id="hint">Explora a rua • aproxima-te dos rivais</div><div id="controls"><div id="stick"><div id="knob"></div></div><div id="actions"><button class="action" id="push">EMPURRAR</button><button class="action" id="reset">REINICIAR</button></div><div id="message">Arrasta o joystick para caminhar</div></div></div>
+<div id="overlay"><div class="card"><div class="eyebrow">DEMO URBANA • 3D</div><h1>STORM OVER<br><span style="color:#d7a56e">EUROPE</span></h1><p>Uma noite fria numa rua europeia. Explora o bairro, passa pelos carros e aproxima-te dos rivais.</p><p><b>Controlos:</b> joystick à esquerda e botões à direita. No computador: WASD/setas e Espaço.</p><button id="start">ENTRAR NA CIDADE</button><p class="small">Demonstração 3D para telemóvel. Requer internet para carregar os gráficos.</p></div></div>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-
 const canvas=document.querySelector('#game');
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
-renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35));
-renderer.setSize(innerWidth,innerHeight,false);
-renderer.shadowMap.enabled=true;
-renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.1;
-const scene=new THREE.Scene();
-scene.background=new THREE.Color('#09121d');
-scene.fog=new THREE.FogExp2('#09121d',.019);
-const camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,120);
-camera.position.set(0,5,8);
-scene.add(new THREE.HemisphereLight(0x9bbce0,0x1a1b20,2.0));
-const moon=new THREE.DirectionalLight(0xbad7ff,2.6);moon.position.set(-8,15,5);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);scene.add(moon);
-const warm=new THREE.PointLight(0xff8c52,45,24);warm.position.set(5,5,-5);scene.add(warm);
-const blue=new THREE.PointLight(0x2c9bff,35,20);blue.position.set(-7,4,4);scene.add(blue);
-
-const mat=(color,rough=.8,metal=0)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
-const mats={
- asphalt:mat('#202832'), line:mat('#7d8790'), wall:mat('#303946'), wall2:mat('#3b4653'),
- window: new THREE.MeshStandardMaterial({color:'#ffbf78',emissive:'#ff8b37',emissiveIntensity:1.5}),
- steel:mat('#485663',.5,.5), crate:mat('#51473e'), player:mat('#1267a3'), red:mat('#8e2e2c'),
- skin:mat('#c28c68'), scarf:mat('#e7463b'), dark:mat('#10151c'), puddle:new THREE.MeshStandardMaterial({color:'#243e50',roughness:.16,metalness:.45})
-};
-function box(w,h,d,material,x,y,z,cast=true,receive=true){
- const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);mesh.position.set(x,y,z);mesh.castShadow=cast;mesh.receiveShadow=receive;scene.add(mesh);return mesh;
-}
-const floor=box(36,.4,36,mats.asphalt,0,-.25,0,false,true);
-for(let i=-16;i<=16;i+=4){box(.035,.012,30,mats.line,i,.0,0,false,false)}
-for(let z=-14;z<=14;z+=4){box(30,.012,.035,mats.line,0,.005,z,false,false)}
-// curb and perimeter walls
-box(36,2.8,.55,mats.wall,0,1.2,-17);box(36,2.8,.55,mats.wall,0,1.2,17);
-box(.55,2.8,34,mats.wall,-17,1.2,0);box(.55,2.8,34,mats.wall,17,1.2,0);
-// building blocks with windows
-function building(x,z,w,d,h,baseColor){
- box(w,h,d,mat(baseColor),x,h/2-0.15,z);
- for(let y=1.1;y<h-0.5;y+=1.35){
-   for(let xx=x-w/2+.65;xx<x+w/2-.35;xx+=1.25){
-     const win=box(.48,.58,.035,Math.random()>.3?mats.window:mat('#192431'),xx,y,z-d/2-.025,false,false);
-     if(Math.random()>.6)win.material=mats.window;
-   }
- }
-}
-building(-12,-8,6,5,7,'#343d4b');building(12,-9,6,5,8,'#2d3847');
-building(-12,8,6,5,6,'#3a414b');building(12,8,6,5,7,'#303a48');
-// street props, metal barriers and crates
-for(let i=0;i<5;i++){
- const x=-7+i*3.5;
- box(1.1,1.1,1.1,mats.crate,x,.55,-6+(i%2)*1.4);
-}
-function barrier(x,z,rot=0){
- const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;scene.add(g);
- const beam=new THREE.Mesh(new THREE.BoxGeometry(2.2,.16,.18),mats.steel);beam.position.y=.75;beam.castShadow=true;g.add(beam);
- for(const dx of [-.85,.85]){const leg=new THREE.Mesh(new THREE.BoxGeometry(.14,.85,.22),mats.steel);leg.position.set(dx,.4,0);leg.castShadow=true;g.add(leg)}
-}
-barrier(-8,2,.2);barrier(8,-1,-.2);barrier(0,-11,0);
-// lamps
-function lamp(x,z){
- box(.13,4,.13,mats.steel,x,2,z);
- const bulb=new THREE.PointLight(0xffc080,32,11);bulb.position.set(x,4.1,z);scene.add(bulb);
- const head=new THREE.Mesh(new THREE.BoxGeometry(.7,.12,.25),mat('#202833',.4,.3));head.position.set(x,4.05,z);scene.add(head);
-}
-lamp(-8,-4);lamp(8,4);lamp(0,-13);
-
-// Additional street details: sidewalks, shop fronts, signs and bollards
-const sidewalk=mat('#454b53',.95), signBlue=mat('#15384b',.7), signRed=mat('#8f2f2c',.7);
-for(const side of [-1,1]){
- box(1.25,.12,31,sidewalk,side*15.35,.02,0,false,true);
- for(let z=-12;z<=12;z+=3){
-  const bollard=new THREE.Mesh(new THREE.CylinderGeometry(.075,.095,.65,8),mats.steel);
-  bollard.position.set(side*14.55,.34,z);bollard.castShadow=true;scene.add(bollard);
- }
-}
-// readable stylized shop signs facing into the street
-function streetSign(x,z,labelColor,accent){
- box(2.8,.55,.09,labelColor,x,2.25,z,false,false);
- box(2.45,.06,.11,accent,x,2.02,z-.015,false,false);
-}
-streetSign(-12,-5,signBlue,mat('#62c8df'));
-streetSign(12,-5,signRed,mat('#f2b36b'));
-streetSign(-12,11,signRed,mat('#f2b36b'));
-streetSign(12,11,signBlue,mat('#62c8df'));
-// subtle manhole covers and painted crossing
-const manhole=new THREE.Mesh(new THREE.CylinderGeometry(.55,.55,.025,24),mat('#3e4c59',.45,.45));
-manhole.rotation.x=Math.PI/2;manhole.position.set(-5,.015,5);scene.add(manhole);
-for(let i=0;i<6;i++)box(1.1,.018,.12,mat('#8a939d'),-2.75+i*1.1,.018,11.8,false,false);
-// light haze cones simulated with translucent soft discs on the ground
-const glowMat=new THREE.MeshBasicMaterial({color:0x4c9dd6,transparent:true,opacity:.055,depthWrite:false});
-for(const p of [[-8,.03,-4],[8,.03,4],[0,.03,-13]]){
- const glow=new THREE.Mesh(new THREE.CircleGeometry(3.0,32),glowMat);glow.rotation.x=-Math.PI/2;glow.position.set(p[0],p[1],p[2]);scene.add(glow);
-}
-function character(color,scarfColor){
- const group=new THREE.Group();
- const jacket=mat(color,.9);
- const trousers=mat('#171d27',.95);
- const shoe=mat('#080b10',.85);
- const skin=mat('#c28c68',.9);
- const hair=mat('#10141c',.95);
- // torso, shaped jacket and shoulders
- const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.30,.55,5,10),jacket);
- torso.position.y=1.03;torso.scale.set(1.02,1,0.78);torso.castShadow=true;group.add(torso);
- const shoulders=new THREE.Mesh(new THREE.BoxGeometry(.82,.22,.34),jacket);
- shoulders.position.y=1.30;shoulders.castShadow=true;group.add(shoulders);
- // head and hair/hood
- const head=new THREE.Mesh(new THREE.SphereGeometry(.205,16,12),skin);
- head.position.y=1.66;head.castShadow=true;group.add(head);
- const haircap=new THREE.Mesh(new THREE.SphereGeometry(.218,16,10,0,Math.PI*2,0,Math.PI*.60),hair);
- haircap.position.set(0,1.72,-.025);haircap.castShadow=true;group.add(haircap);
- const hood=new THREE.Mesh(new THREE.TorusGeometry(.235,.055,8,16,Math.PI),mat('#171c26'));
- hood.rotation.x=Math.PI/2;hood.position.set(0,1.48,-.10);hood.castShadow=true;group.add(hood);
- // scarf and hanging end
- const scarf=new THREE.Mesh(new THREE.BoxGeometry(.55,.105,.23),mat(scarfColor));
- scarf.position.set(0,1.37,.015);scarf.castShadow=true;group.add(scarf);
- const scarfTail=new THREE.Mesh(new THREE.BoxGeometry(.13,.28,.10),mat(scarfColor));
- scarfTail.position.set(.15,1.18,.14);scarfTail.rotation.z=-.12;group.add(scarfTail);
- // arms with elbows and gloves
- const arms=[];
- for(const side of [-1,1]){
-  const upper=new THREE.Mesh(new THREE.CapsuleGeometry(.095,.32,4,8),jacket);
-  upper.position.set(side*.43,1.02,0);upper.rotation.z=side*-.12;upper.castShadow=true;group.add(upper);
-  const hand=new THREE.Mesh(new THREE.SphereGeometry(.085,10,8),shoe);
-  hand.position.set(side*.46,.75,.035);hand.castShadow=true;group.add(hand);
-  arms.push(upper);
- }
- // legs and shoes, animated as a pair
- const legs=[];
- for(const side of [-1,1]){
-  const leg=new THREE.Mesh(new THREE.CapsuleGeometry(.105,.34,4,8),trousers);
-  leg.position.set(side*.16,.43,0);leg.castShadow=true;group.add(leg);legs.push(leg);
-  const boot=new THREE.Mesh(new THREE.BoxGeometry(.19,.12,.32),shoe);
-  boot.position.set(side*.16,.12,.07);boot.castShadow=true;group.add(boot);
- }
- group.userData.legs=legs;group.userData.arms=arms;
- scene.add(group);return group;
-}
-const player=character('#1267a3','#e7463b');player.position.set(0,0,4);
-const rivals=[
- {obj:character('#762e32','#d2b4a1'),hp:3,home:new THREE.Vector3(-4,0,-2),cool:0},
- {obj:character('#5b4240','#c3a34e'),hp:3,home:new THREE.Vector3(4,0,-3),cool:.5},
- {obj:character('#4d3442','#c4d0d8'),hp:3,home:new THREE.Vector3(0,0,-8),cool:1}
-];
-rivals.forEach(r=>r.obj.position.copy(r.home));
-let energy=100,rep=0,ended=false,started=false,attackCd=0,hitFlash=0;
-const ui={energy:document.querySelector('#energy'),rep:document.querySelector('#rep'),rivals:document.querySelector('#rivals'),msg:document.querySelector('#message')};
-function updateHud(){ui.energy.textContent='ENERGIA '+Math.round(energy);ui.rep.textContent='REPUTAÇÃO '+rep;ui.rivals.textContent='RIVAIS '+rivals.filter(r=>r.hp>0).length}
+const renderer=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.25));renderer.setSize(innerWidth,innerHeight,false);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
+const scene=new THREE.Scene();scene.background=new THREE.Color('#101a25');scene.fog=new THREE.FogExp2('#101a25',.014);
+const camera=new THREE.PerspectiveCamera(61,innerWidth/innerHeight,.1,150);
+scene.add(new THREE.HemisphereLight(0x9bb5d0,0x181820,1.8));
+const moon=new THREE.DirectionalLight(0xb7d0e7,2.4);moon.position.set(-10,18,7);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);moon.shadow.camera.left=-22;moon.shadow.camera.right=22;moon.shadow.camera.top=22;moon.shadow.camera.bottom=-22;scene.add(moon);
+const amber=new THREE.PointLight(0xffa96d,35,26);amber.position.set(5,5,-6);scene.add(amber);
+const blue=new THREE.PointLight(0x4c8fcb,22,22);blue.position.set(-7,4,4);scene.add(blue);
+const mat=(c,r=.82,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+const M={road:mat('#20272c',.97),concrete:mat('#55565a'),dark:mat('#171c22'),glass:mat('#273c4a',.25,.45),lit:new THREE.MeshStandardMaterial({color:'#e8b77c',emissive:'#c87b37',emissiveIntensity:1.1}),steel:mat('#434d54',.4,.65),player:mat('#293f50'),pants:mat('#20252b'),skin:mat('#b98363'),hair:mat('#111316'),shoe:mat('#090b0d')};
+function addBox(w,h,d,ma,x,y,z,sh=true){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),ma);o.position.set(x,y,z);o.castShadow=sh;o.receiveShadow=true;scene.add(o);return o}
+addBox(34,.35,100,M.road,0,-.24,-8,false);
+for(const side of [-1,1]){addBox(5,.22,100,M.concrete,side*12.5,-.08,-8,false);addBox(.16,.04,100,mat('#b8a78d'),side*10,-.01,-8,false)}
+for(let z=-54;z<42;z+=8)addBox(.12,.018,3.4,mat('#d4c6a6'),0,.0,z,false);
+function building(x,z,w,d,h,seed){const wall=mat(seed%2?'#554d48':'#41474d'),trim=mat('#262d34'),door=mat('#242a30');addBox(w,h,d,wall,x,h/2-.15,z);addBox(w+.18,.18,d+.18,trim,x,h-.15,z);const face=z+d/2+.025;for(let y=1.25;y<h-1;y+=1.65)for(let xx=x-w/2+.75;xx<x+w/2-.4;xx+=1.35){const lit=Math.sin(xx*13+z*7+y*3+seed)>-.35;addBox(.64,.82,.09,lit?M.lit:M.glass,xx,y,face,false);addBox(.72,.07,.13,trim,xx,y-.46,face+.02,false)}addBox(1.15,1.9,.1,door,x-.6,.82,face+.04,false);addBox(1.7,.11,.14,trim,x,1.92,face+.05,false);addBox(w*.68,.32,.14,seed%2?mat('#59483a'):mat('#344b58'),x,2.35,face+.06,false);addBox(.65,.35,.65,trim,x+w*.22,h+.1,z,false)}
+for(let z=-46,i=0;z<35;z+=12,i++){building(-15.7,z,7.3,9,8+(i%3)*2,i);building(15.7,z+4,7.3,9,9+((i+1)%3)*2,i+1)}
+function lamp(x,z){addBox(.13,4.8,.13,M.steel,x,2.4,z);addBox(.75,.12,.25,M.dark,x,4.75,z);const p=new THREE.PointLight(0xffbd83,27,12);p.position.set(x,4.5,z);scene.add(p);const glow=new THREE.Mesh(new THREE.CircleGeometry(3,24),new THREE.MeshBasicMaterial({color:0xc98a55,transparent:true,opacity:.055,depthWrite:false}));glow.rotation.x=-Math.PI/2;glow.position.set(x,.015,z);scene.add(glow)}
+for(let z=-40;z<34;z+=16){lamp(-9.5,z);lamp(9.5,z+7)}
+function car(x,z,color,rot=0){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;scene.add(g);const body=new THREE.Mesh(new THREE.BoxGeometry(2.05,.62,4.1),mat(color,.5,.22));body.position.y=.58;body.castShadow=true;g.add(body);const cabin=new THREE.Mesh(new THREE.BoxGeometry(1.55,.62,1.9),M.glass);cabin.position.set(0,1.12,-.15);cabin.castShadow=true;g.add(cabin);for(const xx of [-1,1])for(const zz of [-1.35,1.35]){const w=new THREE.Mesh(new THREE.CylinderGeometry(.29,.29,.16,12),M.dark);w.rotation.z=Math.PI/2;w.position.set(xx*1.02,.35,zz);g.add(w)}for(const xx of [-.62,.62]){const l=new THREE.Mesh(new THREE.BoxGeometry(.35,.16,.05),M.lit);l.position.set(xx,.65,2.06);g.add(l)}return g}
+car(-7,-8,'#39444a',.04);car(7,12,'#4a3935',Math.PI);car(-7,28,'#303a42',.05);
+function bin(x,z){const body=new THREE.Mesh(new THREE.CylinderGeometry(.32,.36,.9,10),mat('#344c48'));body.position.set(x,.45,z);body.castShadow=true;scene.add(body);addBox(.7,.08,.7,M.dark,x,.94,z)}
+bin(-10,3);bin(10,-20);
+for(const side of [-1,1])for(let z=-35;z<34;z+=6){const b=new THREE.Mesh(new THREE.CylinderGeometry(.07,.1,.58,8),M.steel);b.position.set(side*9.1,.29,z);b.castShadow=true;scene.add(b)}
+for(const [x,z,s] of [[-2,-13,1],[3,4,.8],[-4,20,1.3]]){const p=new THREE.Mesh(new THREE.CircleGeometry(s,24),new THREE.MeshStandardMaterial({color:'#2a4656',roughness:.19,metalness:.35,transparent:true,opacity:.7}));p.rotation.x=-Math.PI/2;p.position.set(x,.0,z);scene.add(p)}
+function character(jacket,accent,skinTone='#b98363'){const g=new THREE.Group(),j=mat(jacket),pants=mat('#20252b'),shoe=mat('#090b0d'),skin=mat(skinTone),hair=mat('#111316');const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.29,.48,5,10),j);torso.position.y=1.02;torso.scale.set(1.05,1,.82);torso.castShadow=true;g.add(torso);const shoulders=new THREE.Mesh(new THREE.BoxGeometry(.78,.2,.32),j);shoulders.position.y=1.27;g.add(shoulders);const head=new THREE.Mesh(new THREE.SphereGeometry(.19,14,12),skin);head.position.y=1.62;head.castShadow=true;g.add(head);const cap=new THREE.Mesh(new THREE.SphereGeometry(.2,14,10,0,Math.PI*2,0,Math.PI*.58),hair);cap.position.set(0,1.68,-.025);g.add(cap);const neck=new THREE.Mesh(new THREE.CylinderGeometry(.075,.085,.16,8),skin);neck.position.y=1.43;g.add(neck);const zip=new THREE.Mesh(new THREE.BoxGeometry(.025,.48,.015),mat('#b3b6b2',.5,.35));zip.position.set(0,1.02,.245);g.add(zip);const pocket=new THREE.Mesh(new THREE.BoxGeometry(.16,.17,.025),mat(accent));pocket.position.set(.17,1.08,.25);g.add(pocket);const arms=[],legs=[];for(const s of [-1,1]){const a=new THREE.Mesh(new THREE.CapsuleGeometry(.09,.31,4,8),j);a.position.set(s*.4,1.02,0);a.rotation.z=-s*.12;a.castShadow=true;g.add(a);arms.push(a);const hand=new THREE.Mesh(new THREE.SphereGeometry(.075,8,7),shoe);hand.position.set(s*.43,.73,.03);g.add(hand);const l=new THREE.Mesh(new THREE.CapsuleGeometry(.105,.33,4,8),pants);l.position.set(s*.15,.42,0);l.castShadow=true;g.add(l);legs.push(l);const boot=new THREE.Mesh(new THREE.BoxGeometry(.19,.12,.31),shoe);boot.position.set(s*.15,.12,.065);g.add(boot)}const scarf=new THREE.Mesh(new THREE.BoxGeometry(.46,.09,.2),mat(accent));scarf.position.set(0,1.34,.04);g.add(scarf);g.userData.legs=legs;g.userData.arms=arms;scene.add(g);return g}
+const player=character('#243f52','#c48c52');player.position.set(0,0,7);
+const rivals=[{obj:character('#642f30','#b68b65'),hp:3,home:new THREE.Vector3(-3,0,-1),cool:0},{obj:character('#4a4640','#c5a65f'),hp:3,home:new THREE.Vector3(3,0,-4),cool:.5},{obj:character('#383b49','#8f9dac'),hp:3,home:new THREE.Vector3(0,0,-11),cool:1}];rivals.forEach(r=>r.obj.position.copy(r.home));
+let energy=100,rep=0,ended=false,started=false,attackCd=0;const ui={energy:document.querySelector('#energy'),rep:document.querySelector('#rep'),rivals:document.querySelector('#rivals'),msg:document.querySelector('#message')};function updateHud(){ui.energy.textContent='ENERGIA '+Math.round(energy);ui.rep.textContent='REPUTAÇÃO '+rep;ui.rivals.textContent='RIVAIS '+rivals.filter(r=>r.hp>0).length}
 const keys={};addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.code==='Space'){e.preventDefault();attack()}});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
-let joy={x:0,y:0},joyId=null;
-const stick=document.querySelector('#stick'),knob=document.querySelector('#knob');
-function joyStart(e){e.preventDefault();joyId=e.pointerId;stick.setPointerCapture(joyId);joyMove(e)}
-function joyMove(e){if(joyId!==e.pointerId)return;const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy;const max=42,l=Math.hypot(dx,dy)||1;if(l>max){dx=dx/l*max;dy=dy/l*max}joy.x=dx/max;joy.y=dy/max;knob.style.transform=`translate(${dx}px,${dy}px)`}
-function joyEnd(e){if(joyId!==e.pointerId)return;joyId=null;joy.x=joy.y=0;knob.style.transform='translate(0,0)'}
-stick.addEventListener('pointerdown',joyStart);stick.addEventListener('pointermove',joyMove);stick.addEventListener('pointerup',joyEnd);stick.addEventListener('pointercancel',joyEnd);
-document.querySelector('#push').addEventListener('pointerdown',e=>{e.preventDefault();attack()});
-document.querySelector('#reset').addEventListener('click',reset);
-document.querySelector('#start').addEventListener('click',()=>{started=true;document.querySelector('#overlay').style.display='none';});
-function attack(){
- if(!started||ended||attackCd>0)return;
- attackCd=.6;
- let target=null,dist=2.1;
- for(const r of rivals){if(r.hp<=0)continue;const d=player.position.distanceTo(r.obj.position);if(d<dist){dist=d;target=r}}
- if(target){target.hp--;const push=target.obj.position.clone().sub(player.position);push.y=0;if(push.lengthSq())target.obj.position.add(push.normalize().multiplyScalar(1.1));if(target.hp<=0){target.obj.visible=false;rep+=100;ui.msg.textContent='Rival afastado! +100 reputação';}else ui.msg.textContent='Empurrão de treino!';}
- else ui.msg.textContent='Aproxima-te de um rival para empurrar.';
- updateHud();
-}
-function reset(){energy=100;rep=0;ended=false;attackCd=0;player.position.set(0,0,4);player.rotation.set(0,0,0);rivals.forEach(r=>{r.hp=3;r.obj.visible=true;r.obj.position.copy(r.home);r.cool=1});ui.msg.textContent='Arrasta o joystick • Toca em EMPURRAR perto de um rival';updateHud()}
-function clampArena(p){p.x=Math.max(-14.5,Math.min(14.5,p.x));p.z=Math.max(-14.5,Math.min(14.5,p.z))}
-const clock=new THREE.Clock();
-function animate(){
- requestAnimationFrame(animate);
- const dt=Math.min(clock.getDelta(),.04);
- if(started&&!ended){
-  attackCd=Math.max(0,attackCd-dt);
-  let x=joy.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0);
-  let z=joy.y+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);
-  const len=Math.hypot(x,z);if(len>1){x/=len;z/=len}
-  if(Math.hypot(x,z)>.08){
-    player.position.x+=x*5.1*dt;player.position.z+=z*5.1*dt;
-    player.rotation.y=Math.atan2(x,z);
-    player.userData.legs.forEach((leg,i)=>leg.rotation.x=Math.sin(performance.now()*.012+i*Math.PI)*.48);player.userData.arms.forEach((arm,i)=>arm.rotation.x=Math.sin(performance.now()*.012+i*Math.PI+Math.PI)*.22);
-  }else {player.userData.legs.forEach(l=>l.rotation.x*=.8);player.userData.arms.forEach(a=>a.rotation.x*=.8);}
-  clampArena(player.position);
-  for(const r of rivals){
-   if(r.hp<=0)continue;
-   const delta=player.position.clone().sub(r.obj.position);delta.y=0;const d=delta.length();
-   if(d>1.35){const dir=delta.normalize();r.obj.position.addScaledVector(dir,1.35*dt);r.obj.rotation.y=Math.atan2(dir.x,dir.z)}
-   else {r.cool-=dt;if(r.cool<=0){energy=Math.max(0,energy-5);r.cool=1.25;}}
-   clampArena(r.obj.position);
-  }
-  if(energy<=0){ended=true;ui.msg.textContent='Ficaste sem energia. Toca em REINICIAR.'}
-  if(rivals.every(r=>r.hp<=0)){ended=true;ui.msg.textContent='Zona controlada! Toca em REINICIAR para jogar novamente.'}
-  updateHud();
- }
- const target=new THREE.Vector3(player.position.x,1.0,player.position.z);
- const camOffset=new THREE.Vector3(0,4.2,7.3).applyAxisAngle(new THREE.Vector3(0,1,0),player.rotation.y*.25);
- camera.position.lerp(target.clone().add(camOffset),1-Math.pow(.001,dt));
- camera.lookAt(target);
- renderer.render(scene,camera);
-}
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.35));renderer.setSize(innerWidth,innerHeight,false)});
-updateHud();animate();
-</script>
-</body>
-</html>
+let joy={x:0,y:0},joyId=null;const stick=document.querySelector('#stick'),knob=document.querySelector('#knob');function joyStart(e){e.preventDefault();joyId=e.pointerId;stick.setPointerCapture(joyId);joyMove(e)}function joyMove(e){if(joyId!==e.pointerId)return;const r=stick.getBoundingClientRect();let dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),max=40,l=Math.hypot(dx,dy)||1;if(l>max){dx=dx/l*max;dy=dy/l*max}joy.x=dx/max;joy.y=dy/max;knob.style.transform=\`translate(\${dx}px,\${dy}px)\`}function joyEnd(e){if(joyId!==e.pointerId)return;joyId=null;joy.x=joy.y=0;knob.style.transform='translate(0,0)'}stick.addEventListener('pointerdown',joyStart);stick.addEventListener('pointermove',joyMove);stick.addEventListener('pointerup',joyEnd);stick.addEventListener('pointercancel',joyEnd);
+document.querySelector('#push').addEventListener('pointerdown',e=>{e.preventDefault();attack()});document.querySelector('#reset').addEventListener('click',reset);document.querySelector('#start').addEventListener('click',()=>{started=true;document.querySelector('#overlay').style.display='none'});
+function attack(){if(!started||ended||attackCd>0)return;attackCd=.65;let target=null,distance=2.15;for(const r of rivals){if(r.hp<=0)continue;const d=player.position.distanceTo(r.obj.position);if(d<distance){distance=d;target=r}}if(target){target.hp--;const push=target.obj.position.clone().sub(player.position);push.y=0;if(push.lengthSq())target.obj.position.add(push.normalize().multiplyScalar(1.25));if(target.hp<=0){target.obj.visible=false;rep+=100;ui.msg.textContent='Rival afastado! +100 reputação'}else ui.msg.textContent='Empurrão! Continua a pressionar.'}else ui.msg.textContent='Aproxima-te de um rival primeiro.';updateHud()}
+function reset(){energy=100;rep=0;ended=false;attackCd=0;player.position.set(0,0,7);player.rotation.set(0,0,0);rivals.forEach(r=>{r.hp=3;r.obj.visible=true;r.obj.position.copy(r.home);r.cool=1});ui.msg.textContent='Arrasta o joystick para caminhar';updateHud()}
+function clamp(p){p.x=Math.max(-9.2,Math.min(9.2,p.x));p.z=Math.max(-48,Math.min(36,p.z))}
+const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);if(started&&!ended){attackCd=Math.max(0,attackCd-dt);let x=joy.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),z=joy.y+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0),len=Math.hypot(x,z);if(len>1){x/=len;z/=len}if(Math.hypot(x,z)>.08){player.position.x+=x*4.6*dt;player.position.z+=z*4.6*dt;player.rotation.y=Math.atan2(x,z);player.userData.legs.forEach((l,i)=>l.rotation.x=Math.sin(performance.now()*.011+i*Math.PI)*.42);player.userData.arms.forEach((a,i)=>a.rotation.x=Math.sin(performance.now()*.011+i*Math.PI+Math.PI)*.18)}else{player.userData.legs.forEach(l=>l.rotation.x*=.8);player.userData.arms.forEach(a=>a.rotation.x*=.8)}clamp(player.position);for(const r of rivals){if(r.hp<=0)continue;const dvec=player.position.clone().sub(r.obj.position);dvec.y=0;const d=dvec.length();if(d>1.5){const dir=dvec.normalize();r.obj.position.addScaledVector(dir,1.05*dt);r.obj.rotation.y=Math.atan2(dir.x,dir.z)}else{r.cool-=dt;if(r.cool<=0){energy=Math.max(0,energy-4);r.cool=1.4}}clamp(r.obj.position)}if(energy<=0){ended=true;ui.msg.textContent='Sem energia. Toca em REINICIAR.'}if(rivals.every(r=>r.hp<=0)){ended=true;ui.msg.textContent='Rua controlada! Toca em REINICIAR.'}updateHud()}
+const behind=new THREE.Vector3(0,3.4,6.2).applyAxisAngle(new THREE.Vector3(0,1,0),player.rotation.y);const desired=player.position.clone().add(behind);camera.position.lerp(desired,1-Math.pow(.002,dt));camera.lookAt(player.position.clone().add(new THREE.Vector3(0,1.35,0)).add(new THREE.Vector3(Math.sin(player.rotation.y)*2,0,Math.cos(player.rotation.y)*2)));renderer.render(scene,camera)}
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.25));renderer.setSize(innerWidth,innerHeight,false)});updateHud();animate();
+</script></body></html>
