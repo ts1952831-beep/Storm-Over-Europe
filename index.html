@@ -21,8 +21,23 @@
 <div id="hud"><div class="top"><div class="brand">STORM <span style="color:#d7a56e">/</span><br>EUROPE</div><div class="stats"><div class="pill" id="energy">ENERGIA 100</div><div class="pill" id="rep">REPUTAÇÃO 0</div><div class="pill" id="rivals">RIVAIS 3</div></div></div>
 <div id="hint">Explora a rua • aproxima-te dos rivais</div><div id="controls"><div id="stick"><div id="knob"></div></div><div id="actions"><button class="action" id="push">EMPURRAR</button><button class="action" id="reset">REINICIAR</button></div><div id="message">Arrasta o joystick para caminhar</div></div></div>
 <div id="overlay"><div class="card"><div class="eyebrow">DEMO URBANA • 3D</div><h1>STORM OVER<br><span style="color:#d7a56e">EUROPE</span></h1><p>Uma noite fria numa rua europeia. Explora o bairro, passa pelos carros e aproxima-te dos rivais.</p><p><b>Controlos:</b> joystick à esquerda e botões à direita. No computador: WASD/setas e Espaço.</p><button id="start">ENTRAR NA CIDADE</button><p class="small">Demonstração 3D para telemóvel. Requer internet para carregar os gráficos.</p></div></div>
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var start = document.getElementById('start');
+  if (start) start.addEventListener('click', function () {
+    var overlay = document.getElementById('overlay');
+    if (overlay) overlay.style.display = 'none';
+  });
+});
+</script>
+<script>
+if (typeof THREE === 'undefined') {
+  document.querySelector('#start').addEventListener('click', function () {
+    document.querySelector('#message').textContent = 'Não foi possível carregar os gráficos 3D. Verifica a ligação à internet e tenta atualizar a página.';
+  });
+  throw new Error('Three.js não carregou');
+}
 const canvas=document.querySelector('#game');
 const renderer=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.25));renderer.setSize(innerWidth,innerHeight,false);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
